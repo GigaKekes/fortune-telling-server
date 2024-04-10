@@ -6,7 +6,5 @@ file(GLOB_RECURSE SRC_FILES src/*.cpp)
 
 
 add_executable(tarotserver main.cpp ${SRC_FILES})
-target_include_directories(tarotserver PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-
-#target_link_libraries(tarotserver jsoncpp curl)
+target_include_directories(tarotserver PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/libs ${CMAKE_CURRENT_SOURCE_DIR}/src/Server.h ${CMAKE_CURRENT_SOURCE_DIR}/src/TarrotCardTeller.h.h)
+target_link_libraries(tarotserver jsoncpp curl)

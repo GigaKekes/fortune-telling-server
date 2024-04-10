@@ -7,26 +7,25 @@
 #include <random>
 #include <algorithm>
 
+#include <curl/curl.h>
+#include <jsoncpp/include/json/json.h>
+
+namespace server {
+
 class TarotCardTeller {
 private:
-
-
+    std::string huggingfaceTokenRequest;
 public:
     TarotCardTeller();  // Constructor
     ~TarotCardTeller(); // Destructor
-    
+    std::string tell_tarot(const std::string& question); // Method to tell tarot
 
 private:
 
     std::string generate_text(const std::string& prompt, const std::string& model_id); // Method to generate text from tarot card future teller
-    std::string generateRandomCards(int amount); // Method to generate random cards
-    
-    size_t write_callback(void *contents, size_t size, size_t nmemb, std::string *output) {
-    output->append((char*)contents, size * nmemb);
-    return size * nmemb;
-    };
-
-
+    std::vector<std::string> generateRandomCards(int amount); // Method to generate random cards
 };
+
+} // namespace server
 
 #endif // FT_TAROTCARDTELLER_H
