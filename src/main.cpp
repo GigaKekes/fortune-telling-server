@@ -4,12 +4,12 @@
 #include <string>
 #include <mutex>
 
-#include "src/Server.h"
-#include "src/TarrotCardTeller.h"
+#include "Server.h"
+#include "TarrotCardTeller.h"
 
 int main()
 {
     server::TarotCardTeller tarotCardTeller;
-    std::cout << tarotCardTeller.tell_tarot("What will happen to me in the future?") << std::endl;
+    std::cout << tarotCardTeller.tell_tarot("how sholud i study for a calculus colloquium?") << std::endl;
     return 0;
 }

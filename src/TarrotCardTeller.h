@@ -13,11 +13,11 @@
 namespace server {
 
 class TarotCardTeller {
-private:
-    std::string huggingfaceTokenRequest;
 public:
     TarotCardTeller();  // Constructor
-    ~TarotCardTeller(); // Destructor
+    ~TarotCardTeller() = default; // Destructor
+
+    
     std::string tell_tarot(const std::string& question); // Method to tell tarot
 
 private:

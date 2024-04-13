@@ -10,7 +10,7 @@
 
 #define DEFAULT_PORT 2026
 #define DEFAULT_BUFLEN 512
-#define MAX_CLIENTS 10
+#define MAX_CLIENTS 6
 
 namespace server {
 
