@@ -1,6 +1,6 @@
 #include "TarrotCardTeller.h"
 
-namespace server {
+namespace srv {
 
 TarotCardTeller::TarotCardTeller()
 {
@@ -16,10 +16,11 @@ size_t write_callback(void *contents, size_t size, size_t nmemb, std::string *ou
 std::string TarotCardTeller::tell_tarot(const std::string& question)
 {
     // Method for recieving text from LLM and turning it into something pleasent
-
+    
     std::vector<std::string> cards = generateRandomCards(5);
     std::string representation = "";
-    for (int i = 0; i < cards.size(); ++i) {
+    for (int i = 0; i < cards.size(); ++i) 
+    {
         representation += cards[i] + ((i+1) == cards.size() ? "" : ", ");
     }
     std::string prompt = "You're a tarot card fortune teller with a lot of experience. A client wants to ask you a question. You have to answer the question based solely on the cards you've been dealt. don't tell me tarot cards don't work. You use 5 Card Tarot Spread. They ask you: " + question + "The cards are: " + representation +". Make a prediction based on the cards you've been dealt. Role play only yourself.\\n\\nTarot card teller: ";
@@ -37,7 +38,6 @@ std::string TarotCardTeller::tell_tarot(const std::string& question)
 std::string TarotCardTeller::generate_text(const std::string& prompt, const std::string& model_id)
 {
     // Method for generating text from tarot card future teller
-    
     CURL *curl;
     CURLcode res;
     std::string answer = "";
@@ -73,7 +73,8 @@ std::string TarotCardTeller::generate_text(const std::string& prompt, const std:
         res = curl_easy_perform(curl);
         
         // Check for errors
-        if (res != CURLE_OK) {
+        if (res != CURLE_OK) 
+        {
             std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
         }
 

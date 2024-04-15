@@ -10,28 +10,33 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "TarrotCardTeller.h"
+
 #define DEFAULT_PORT 2026
-#define DEFAULT_BUFLEN 512
+#define DEFAULT_BUFLEN 1024
 #define MAX_CLIENTS 6
 
-namespace server {
+namespace srv {
 
 class Server {
+private:
+    bool running_;
+
+    std::vector<std::thread> client_threads_; // Guarded by thread_mtx_
+    std::mutex thread_mtx_;
+
+    int server_fd_;
+    struct sockaddr_in address;
+    int addrlen = sizeof(address);
+
 public:
-    Server(int port);
+    Server();
     ~Server();
 
     void start();
     void stop();
-
 private:
-    int port_;
-    bool running_;
-
-    std::vector<std::thread> client_threads_;
-
     void handleClient(int clientSocket);
-
 };
 
 }

@@ -9,7 +9,8 @@
 
 int main()
 {
-    server::TarotCardTeller tarotCardTeller;
-    std::cout << tarotCardTeller.tell_tarot("how sholud i study for a calculus colloquium?") << std::endl;
+    srv::Server mainServer;
+    mainServer.start();
+
     return 0;
 }

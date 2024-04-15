@@ -8,9 +8,10 @@
 #include <algorithm>
 
 #include <curl/curl.h>
-#include <jsoncpp/include/json/json.h>
+#include <jsoncpp/json/json.h>
 
-namespace server {
+
+namespace srv {
 
 class TarotCardTeller {
 public:
