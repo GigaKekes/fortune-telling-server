@@ -13,7 +13,8 @@
 #include "TarrotCardTeller.h"
 
 #define DEFAULT_PORT 2026
-#define DEFAULT_BUFLEN 1024
+#define DEFAULT_BUFLEN_IN 512
+#define DEFAULT_BUFLEN_OUT 4096
 #define MAX_CLIENTS 6
 
 namespace srv {

@@ -6,6 +6,7 @@
 #include <string>
 #include <random>
 #include <algorithm>
+#include <regex>
 
 #include <curl/curl.h>
 #include <jsoncpp/json/json.h>

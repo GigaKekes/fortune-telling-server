@@ -31,7 +31,9 @@ std::string TarotCardTeller::tell_tarot(const std::string& question)
     generated_text = generated_text.substr(prompt.size()+3);
     generated_text = generated_text.substr(0, generated_text.size()-3);
 
-    std::string result = "Your cards: " + representation + '\n' + generated_text;
+    
+
+    std::string result = "Your cards: " + representation + '\n' + std::regex_replace(generated_text, std::regex(R"(\\n)"), "\n");
     return result;
 }
 

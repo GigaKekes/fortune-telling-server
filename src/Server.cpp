@@ -70,14 +70,16 @@ namespace srv
 
     void Server::handleClient(int clientSocket)
     {
-        char buffer[DEFAULT_BUFLEN] = {0};
-        read( clientSocket , buffer, DEFAULT_BUFLEN);
+        char buffer[DEFAULT_BUFLEN_IN] = {0};
+        read( clientSocket , buffer, DEFAULT_BUFLEN_IN);
         std::cout << "Client message: " << buffer << std::endl;
         
         TarotCardTeller cardTeller;
-        const char* message = cardTeller.tell_tarot(std::string(buffer)).c_str();
+        std::string answer = cardTeller.tell_tarot(std::string(buffer)).c_str();
+        const char * message = answer.c_str();
 
-        send(clientSocket , message , strlen(message), 0 );
+        std::cout << "Client " << clientSocket << " recieved: " << message << std::endl;
+        send(clientSocket , message, strlen(message), 0 );
         close(clientSocket);
     }
 
