@@ -2,11 +2,13 @@
 #define FT_SERVER_H
 
 #include <iostream>
-#include <thread>
 #include <vector>
-#include <winsock2.h>
+#include <thread>
 #include <mutex>
-#include <string>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <string.h>
 
 #define DEFAULT_PORT 2026
 #define DEFAULT_BUFLEN 512
@@ -23,13 +25,13 @@ public:
     void stop();
 
 private:
-    int port;
-    bool running;
-    std::vector<std::thread> threads;
+    int port_;
+    bool running_;
+
+    std::vector<std::thread> client_threads_;
 
     void handleClient(int clientSocket);
-    void initializeWinsock();
-    void cleanupWinsock();
+
 };
 
 }
