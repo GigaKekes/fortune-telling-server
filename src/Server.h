@@ -7,15 +7,13 @@
 #include <mutex>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
 
 #include "TarrotCardTeller.h"
-
-#define DEFAULT_PORT 2026
-#define DEFAULT_BUFLEN_IN 512
-#define DEFAULT_BUFLEN_OUT 4096
-#define MAX_CLIENTS 6
+#include "Command.h"
+#include "utils.h"
 
 namespace srv {
 
@@ -37,7 +35,7 @@ public:
     void start();
     void stop();
 private:
-    void handleClient(int clientSocket);
+    void handleClient(int clientSocket, sockaddr_in address_client);
 };
 
 }

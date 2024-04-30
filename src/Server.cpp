@@ -28,7 +28,7 @@ namespace srv
             perror("bind failed");
             exit(EXIT_FAILURE);
         }
-        if (listen(server_fd_, 3) < 0)
+        if (listen(server_fd_, MAX_CLIENTS) < 0)
         {
             perror("listen");
             exit(EXIT_FAILURE);
@@ -42,15 +42,20 @@ namespace srv
 
     void Server::start()
     {
+        struct sockaddr_in address_client;
+        int addrlen_client = sizeof(address_client);
+        int client_socket;
+        
         while (true)
         {
-            int client_socket;
-            if ((client_socket = accept(server_fd_, (struct sockaddr *)&address, (socklen_t *)&addrlen)) < 0)
+
+            if ((client_socket = accept(server_fd_, (struct sockaddr *)&address_client, (socklen_t *)&addrlen_client)) < 0)
             {
                 perror("accept");
                 exit(EXIT_FAILURE);
             }
-            std::thread t(&Server::handleClient, this, client_socket);
+            std::thread t(&Server::handleClient, this, client_socket, address_client);
+            
             std::lock_guard<std::mutex> lock(thread_mtx_);
             client_threads_.push_back(std::move(t));
         }
@@ -68,19 +73,11 @@ namespace srv
         close(server_fd_);
     }
 
-    void Server::handleClient(int clientSocket)
+    void Server::handleClient(int clientSocket, sockaddr_in address_client)
     {
-        char buffer[DEFAULT_BUFLEN_IN] = {0};
-        read( clientSocket , buffer, DEFAULT_BUFLEN_IN);
-        std::cout << "Client message: " << buffer << std::endl;
-        
-        TarotCardTeller cardTeller;
-        std::string answer = cardTeller.tell_tarot(std::string(buffer)).c_str();
-        const char * message = answer.c_str();
-
-        std::cout << "Client " << clientSocket << " recieved: " << message << std::endl;
-        send(clientSocket , message, strlen(message), 0 );
-        close(clientSocket);
+        Command *command = new ClientRequestCommand();
+        command->execute(clientSocket, address_client);
+        delete command;
     }
 
 } // namespace server
