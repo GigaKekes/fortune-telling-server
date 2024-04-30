@@ -11,22 +11,21 @@
 #include <curl/curl.h>
 #include <jsoncpp/json/json.h>
 
+namespace srv
+{
 
-namespace srv {
+    class TarotCardTeller
+    {
+    public:
+        TarotCardTeller();            // Constructor
+        ~TarotCardTeller() = default; // Destructor
 
-class TarotCardTeller {
-public:
-    TarotCardTeller();  // Constructor
-    ~TarotCardTeller() = default; // Destructor
+        std::string tell_tarot(const std::string &question); // Method to tell tarot
 
-    
-    std::string tell_tarot(const std::string& question); // Method to tell tarot
-
-private:
-
-    std::string generate_text(const std::string& prompt, const std::string& model_id); // Method to generate text from tarot card future teller
-    std::vector<std::string> generateRandomCards(int amount); // Method to generate random cards
-};
+    private:
+        std::string generate_text(const std::string &prompt, const std::string &model_id); // Method to generate text from tarot card future teller
+        std::vector<std::string> generateRandomCards(int amount);                          // Method to generate random cards
+    };
 
 } // namespace server
 
