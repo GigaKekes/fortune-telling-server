@@ -45,17 +45,16 @@ namespace srv
         struct sockaddr_in address_client;
         int addrlen_client = sizeof(address_client);
         int client_socket;
-        
+
         while (true)
         {
-
             if ((client_socket = accept(server_fd_, (struct sockaddr *)&address_client, (socklen_t *)&addrlen_client)) < 0)
             {
                 perror("accept");
                 exit(EXIT_FAILURE);
             }
             std::thread t(&Server::handleClient, this, client_socket, address_client);
-            
+
             std::lock_guard<std::mutex> lock(thread_mtx_);
             client_threads_.push_back(std::move(t));
         }
@@ -75,9 +74,31 @@ namespace srv
 
     void Server::handleClient(int clientSocket, sockaddr_in address_client)
     {
-        Command *command = new ClientRequestCommand();
-        command->execute(clientSocket, address_client);
-        delete command;
+        std::string client_representation = "Client [" + std::to_string(clientSocket) + " | " + inet_ntoa(address_client.sin_addr) + "] ";
+        std::cout << client_representation << "has connected to the server" << std::endl;
+        while (true)
+        {
+            char buffer[DEFAULT_BUFLEN_IN] = {0};
+            int bytesRead = read(clientSocket, buffer, DEFAULT_BUFLEN_IN);
+            if (bytesRead <= 0)
+            {
+                std::cout << client_representation << "disconnected" << std::endl;
+                break;
+            }
+            std::cout << client_representation << "message: " << buffer << std::endl;
+            
+            auto future = pool.enqueue([buffer] {
+                srv::TarotCardTeller cardTeller;
+                std::string answer = cardTeller.tell_tarot(std::string(buffer));
+                return answer;
+            });
+
+            std::string message = future.get();
+            std::cout << client_representation << "received: " << message << std::endl;
+            send(clientSocket, message.c_str(), strlen(message.c_str()), 0);
+            
+        }
+        close(clientSocket);
     }
 
 } // namespace server

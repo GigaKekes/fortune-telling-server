@@ -12,7 +12,7 @@
 #include <string.h>
 
 #include "TarrotCardTeller.h"
-#include "Command.h"
+#include "ThreadPool.h"
 #include "utils.h"
 
 namespace srv {
@@ -23,6 +23,9 @@ private:
 
     std::vector<std::thread> client_threads_; // Guarded by thread_mtx_
     std::mutex thread_mtx_;
+
+    ThreadPool pool;
+    std::mutex thread_pool;
 
     int server_fd_;
     struct sockaddr_in address;
